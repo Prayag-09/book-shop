@@ -2,73 +2,64 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const mysql = require('mysql2/promise');
-const PORT = process.env.MYSQL_ADDON_PORT || 3000;
+const db = require('./db');
+
+const PORT = process.env.MYSQL_ADDON_PORT;
 
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createPool({
-    host: process.env.MYSQL_ADDON_HOST,
-    user: process.env.MYSQL_ADDON_USER,
-    password: process.env.MYSQL_ADDON_PASSWORD,
-    database: process.env.MYSQL_ADDON_DB,
-    port: process.env.MYSQL_ADDON_PORT
-});
-
-app.get('/books', async (req, res) => {
-    try {
-        const [rows] = await db.query('SELECT * FROM books');
-        res.json(rows);
-    } catch (err) {
-        console.error('Error executing query:', err);
-        res.status(500).json({ error: 'Internal server error' });
+app.get('/books', (req, res) => {
+  db.query('SELECT * FROM books', (err, rows) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      return res.status(500).json({ error: 'Internal server error' });
     }
+    res.json(rows);
+  });
 });
 
-app.post('/books', async (req, res) => {
-    const { title, description, price, cover } = req.body;
-    
-    const query = "INSERT INTO books (`title`, `description`, `price`, `cover`) VALUES (?, ?, ?, ?)";
+app.post('/books', (req, res) => {
+  const { title, description, price, cover } = req.body;
+  const query = 'INSERT INTO books (title, description, price, cover) VALUES (?, ?, ?, ?)';
 
-    try {
-        const [result] = await db.query(query, [title, description, price, cover]);
-        res.status(200).json({ message: "Book has been added.", bookId: result.insertId });
-    } catch (err) {
-        console.error('Error executing query:', err);
-        res.status(500).json({ error: 'Internal server error' });
+  db.query(query, [title, description, price, cover], (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      return res.status(500).json({ error: 'Internal server error' });
     }
+    res.status(200).json({ message: 'Book has been added.' });
+  });
 });
 
-app.put('/books/:id', async (req, res) => {
-    const { id } = req.params;
-    const { title, description, price, cover } = req.body;
-    const query = 'UPDATE books SET title = ?, description = ?, price = ?, cover = ? WHERE id = ?';
-    
-    try {
-        const [result] = await db.query(query, [title, description, price, cover, id]);
-        res.json({ affectedRows: result.affectedRows });
-    } catch (err) {
-        console.error('Error executing query:', err);
-        res.status(500).json({ error: 'Internal server error' });
+app.put('/books/:id', (req, res) => {
+  const { id } = req.params;
+  const { title, description, price, cover } = req.body;
+  const query = 'UPDATE books SET title = ?, description = ?, price = ?, cover = ? WHERE id = ?';
+  const values = [title, description, price, cover, id];
+
+  db.query(query, values, (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      return res.status(500).json({ error: 'Internal server error' });
     }
+    res.json({ affectedRows: results.affectedRows });
+  });
 });
 
+app.delete('/books/:id', (req, res) => {
+  const { id } = req.params;
+  const query = 'DELETE FROM books WHERE id = ?';
 
-app.delete('/books/:id', async (req, res) => {
-    const { id } = req.params;
-    const query = 'DELETE FROM books WHERE id = ?';
-    
-    try {
-        const [result] = await db.query(query, [id]);
-        res.json({ affectedRows: result.affectedRows });
-    } catch (err) {
-        console.error('Error executing query:', err);
-        res.status(500).json({ error: 'Internal server error' });
+  db.query(query, [id], (err, results) => {
+    if (err) {
+      console.error('Error executing query:', err);
+      return res.status(500).json({ error: 'Internal server error' });
     }
+    res.json({ affectedRows: results.affectedRows });
+  });
 });
-
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
