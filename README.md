@@ -134,4 +134,3 @@ A simple yet functional book management application that allows users to add, up
 
 4. **View Books:**
    - View all books on the homepage.
-]
