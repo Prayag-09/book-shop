@@ -42,7 +42,8 @@ const Books = () => {
                 className="w-full h-48 object-cover rounded-t-lg mb-4"
               />
               <h2 className="text-xl font-semibold mb-2">{book.title}</h2>
-              <p className="text-gray-300 mb-2">{book.description}</p> {/* Updated desc to description */}
+              <p className="text-gray-300 mb-2">{book.description}</p>{" "}
+              {/* Updated desc to description */}
               <span className="block text-lg font-medium mb-4">
                 ${book.price}
               </span>

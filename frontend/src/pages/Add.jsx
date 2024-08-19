@@ -49,7 +49,7 @@ const Add = () => {
         />
         <textarea
           rows={5}
-          placeholder="Book description" 
+          placeholder="Book description"
           name="description"
           value={book.description}
           onChange={handleChange}
