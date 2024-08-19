@@ -94,7 +94,7 @@ A simple yet functional book management application that allows users to add, up
    Copy the content from `.env.example` and paste it into a new file named `.env` in the `backend` directory. Update the `MYSQL_ADDON_URI` with your database connection string.
 
    ```env
-   MYSQL_ADDON_URI=mysql://ujfyi24bnjq9yfxb:F6BF91vwSSAjZNFItLAN@blnzq5vfpc9fcawc1dgi-mysql.services.clever-cloud.com:3306/blnzq5vfpc9fcawc1dgi
+   MYSQL_ADDON_URI=mysql://@mysql.services.clever-cloud.com:3306/dbname
    ```
 
 4. **Run the database setup script:**
