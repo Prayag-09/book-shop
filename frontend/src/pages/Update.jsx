@@ -21,7 +21,7 @@ const Update = () => {
     const fetchBook = async () => {
       try {
         const res = await axios.get(
-          `https://book-shop-inky.vercel.app/books/${bookId}`
+          `https://book-shop-xbam.onrender.com/books/${bookId}`
         );
         setBook(res.data);
       } catch (err) {
@@ -40,7 +40,7 @@ const Update = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `https://book-shop-inky.vercel.app/books/${bookId}`,
+        `https://book-shop-xbam.onrender.com/books/${bookId}`,
         book
       );
       if (response.status === 200) {

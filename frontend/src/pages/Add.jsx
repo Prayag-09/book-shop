@@ -30,7 +30,7 @@ const Add = () => {
     setLoading(true);
 
     try {
-      await axios.post("https://book-shop-inky.vercel.app/books", book);
+      await axios.post("https://book-shop-xbam.onrender.com/books", book);
       setBook({
         title: "",
         description: "",

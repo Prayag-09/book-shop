@@ -8,7 +8,9 @@ const Books = () => {
   useEffect(() => {
     const fetchAllBooks = async () => {
       try {
-        const res = await axios.get("https://book-shop-inky.vercel.app/books");
+        const res = await axios.get(
+          "https://book-shop-xbam.onrender.com/books"
+        );
         setBooks(res.data);
       } catch (err) {
         console.log(err);
@@ -19,7 +21,7 @@ const Books = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://book-shop-inky.vercel.app/books/${id}`);
+      await axios.delete(`https://book-shop-xbam.onrender.com/books/${id}`);
       setBooks((prevBooks) => prevBooks.filter((book) => book.id !== id));
     } catch (err) {
       console.log(err);
