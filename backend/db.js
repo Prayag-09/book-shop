@@ -1,15 +1,14 @@
 require('dotenv').config();
 const mysql = require('mysql2');
 
-// Create a single connection
 const connection = mysql.createConnection({
-  host: process.env.MYSQL_ADDON_HOST,
-  user: process.env.MYSQL_ADDON_USER,
-  password: process.env.MYSQL_ADDON_PASSWORD,
-  database: process.env.MYSQL_ADDON_DB
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
-// Connect to the database
 connection.connect((err) => {
   if (err) {
     console.error('Error connecting to the database:', err.stack);
@@ -17,7 +16,6 @@ connection.connect((err) => {
   }
   console.log('Connected to the database as id', connection.threadId);
 
-  // Create a table if it doesn't exist
   const createTableQuery = `
     CREATE TABLE IF NOT EXISTS books (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -33,7 +31,7 @@ connection.connect((err) => {
       console.error('Error creating table:', err.stack);
       return;
     }
-    console.log('Table `books` exists or was created successfully.');
+    console.log('Table \`books\` exists or was created successfully.');
   });
 });
 

@@ -10,7 +10,8 @@ const Add = () => {
     price: "",
     cover: "",
   });
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -20,13 +21,32 @@ const Add = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
+
+    if (!book.title || !book.description || !book.price) {
+      setError("All fields are required.");
+      return;
+    }
+
+    setLoading(true);
+
     try {
-      await axios.post("http://localhost:3306/books", book);
+      await axios.post("https://book-shop-inky.vercel.app/books", book);
+      setBook({
+        title: "",
+        description: "",
+        price: "",
+        cover: "",
+      });
+      setError(false);
       navigate("/");
     } catch (err) {
-      console.log(err);
-      setError(true);
+      if (err.response) {
+        setError(err.response.data.message || "Something went wrong!");
+      } else {
+        setError("Failed to connect to the server.");
+      }
     }
+    setLoading(false);
   };
 
   return (
@@ -76,14 +96,11 @@ const Add = () => {
         <button
           type="submit"
           className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          disabled={loading}
         >
-          Add
+          {loading ? "Adding..." : "Add"}
         </button>
-        {error && (
-          <p className="text-red-400">
-            Something went wrong! Please try again.
-          </p>
-        )}
+        {error && <p className="text-red-400">{error}</p>}
       </form>
       <Link
         to="/"

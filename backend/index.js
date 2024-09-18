@@ -4,7 +4,7 @@ const cors = require('cors');
 const app = express();
 const db = require('./db');
 
-const PORT = process.env.MYSQL_ADDON_PORT;
+const PORT = process.env.DB_PORT;
 
 app.use(cors());
 app.use(express.json());

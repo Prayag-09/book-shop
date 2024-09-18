@@ -20,7 +20,9 @@ const Update = () => {
   useEffect(() => {
     const fetchBook = async () => {
       try {
-        const res = await axios.get(`http://localhost:3306/books/${bookId}`);
+        const res = await axios.get(
+          `https://book-shop-inky.vercel.app/books/${bookId}`
+        );
         setBook(res.data);
       } catch (err) {
         console.log(err);
@@ -38,7 +40,7 @@ const Update = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:3306/books/${bookId}`,
+        `https://book-shop-inky.vercel.app/books/${bookId}`,
         book
       );
       if (response.status === 200) {
