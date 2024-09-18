@@ -13,8 +13,6 @@ A simple yet functional book management application that allows users to add, up
   - [Backend](#backend)
 - [API Endpoints](#api-endpoints)
 - [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
